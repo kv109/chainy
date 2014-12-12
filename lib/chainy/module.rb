@@ -8,7 +8,7 @@ class Module
 
     attr_accessor(symbol, *args)
 
-    prefix = opts[:prefix] || 'with'
+    prefix = opts[:prefix] || Chainy::Config.prefix
 
     [].tap do |method_names|
       method_names << symbol
