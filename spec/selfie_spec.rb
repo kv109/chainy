@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe '#selfie_attr_accessor' do
+describe '#chain_attr_accessor' do
   let(:object) { SomeClass.new }
 
   shared_examples_for 'attr_accessor' do
@@ -46,7 +46,7 @@ describe '#selfie_attr_accessor' do
 
     before do
       class SomeClass
-        selfie_attr_accessor :only_one_method
+        chain_attr_accessor :only_one_method
       end
     end
 
@@ -60,7 +60,7 @@ describe '#selfie_attr_accessor' do
 
     before do
       class SomeClass
-        selfie_attr_accessor :first_method, :second_method
+        chain_attr_accessor :first_method, :second_method
       end
     end
 
@@ -77,7 +77,7 @@ describe '#selfie_attr_accessor' do
 
     before do
       class SomeClass
-        selfie_attr_accessor :first_method_with_custom_prefix, :second_method_with_custom_prefix, prefix: 'add'
+        chain_attr_accessor :first_method_with_custom_prefix, :second_method_with_custom_prefix, prefix: 'add'
       end
     end
 

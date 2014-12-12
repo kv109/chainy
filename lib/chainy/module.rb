@@ -1,5 +1,5 @@
 class Module
-  def selfie_attr_accessor(symbol, *args)
+  def chain_attr_accessor(symbol, *args)
     if args.last.is_a?(Hash)
       opts = args.pop
     else
