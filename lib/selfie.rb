@@ -1,1 +1,1 @@
-require 'selfie/module'
+require_relative 'selfie/module'
