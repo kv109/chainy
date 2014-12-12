@@ -1,1 +1,1 @@
-require_relative '../lib/selfie'
+require_relative '../lib/chainy'
