@@ -37,7 +37,11 @@ instance.add_strategy(:mock).add_timeout(30)  #=> chain setters
 
 ### Installation
 
+Install gem
+
 `gem install chainy`
+
+and use it
 
 ```ruby
 require 'chainy'
@@ -49,3 +53,7 @@ end
 instance = YourClass.new
 instance.add_strategy(:mock).add_timeout(30)
 ```
+
+or simply add it to your `Gemfile`: 
+
+`gem 'chainy'`
