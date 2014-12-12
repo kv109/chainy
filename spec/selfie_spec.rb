@@ -4,7 +4,7 @@ describe '#selfie_attr_accessor' do
   let(:object) { SomeClass.new }
 
   shared_examples_for 'attr_accessor' do
-    before { object.send(setter, argument) }
+    before { object.send("#{getter}=", argument) }
 
     it do
       expect( object.send(getter) ).to eql argument
@@ -12,7 +12,7 @@ describe '#selfie_attr_accessor' do
   end
 
   shared_examples_for 'chain method' do
-    subject { object.send("with_#{method_name}", argument ) }
+    subject { object.send("with_#{method_name}", argument) }
 
     it 'should have "with" prefix' do
       expect{ subject }.to_not raise_error{ NoMethodError }
@@ -40,14 +40,9 @@ describe '#selfie_attr_accessor' do
       end
     end
 
-    it_behaves_like 'attr_accessor' do
-      let!(:setter) { :strategy= }
-      let!(:getter) { :strategy }
-    end
+    it_behaves_like('attr_accessor') { let!(:getter) { :strategy } }
 
-    it_behaves_like 'chain method' do
-      let!(:method_name) { :strategy }
-    end
+    it_behaves_like('chain method') { let!(:method_name) { :strategy } }
   end
 
   context 'with many arguments' do
@@ -59,15 +54,24 @@ describe '#selfie_attr_accessor' do
       end
     end
 
-    it_behaves_like 'attr_accessor' do
-      let!(:setter) { :strategy= }
-      let!(:getter) { :strategy }
+    it_behaves_like('attr_accessor') { let!(:getter) { :strategy } }
+    it_behaves_like('attr_accessor') { let!(:getter) { :setup } }
+
+    it_behaves_like('chain method') { let!(:method_name) { :strategy } }
+    it_behaves_like('chain method') { let!(:method_name) { :setup } }
+  end
+
+  context 'with prefix option' do
+    let(:argument) { 'argument' }
+
+    before do
+      class SomeClass
+        selfie_attr_accessor :strategy, :setup, prefix: 'add'
+      end
     end
 
-    it_behaves_like 'attr_accessor' do
-      let!(:setter) { :setup= }
-      let!(:getter) { :setup }
-    end
+    it_behaves_like('attr_accessor') { let!(:getter) { :strategy } }
+    it_behaves_like('attr_accessor') { let!(:getter) { :setup } }
 
     it_behaves_like('chain method') { let!(:method_name) { :strategy } }
     it_behaves_like('chain method') { let!(:method_name) { :setup } }
