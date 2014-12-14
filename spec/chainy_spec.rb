@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe '#chain_attr_accessor' do
   let(:object) { SomeClass.new }
+  let(:argument) { 'argument' }
 
   shared_examples_for 'attr_accessor' do
     before { object.send("#{getter}=", argument) }
@@ -12,16 +13,12 @@ describe '#chain_attr_accessor' do
   end
 
   shared_examples_for 'chain method with default prefix' do
-    it_behaves_like('chain method') do
-      let!(:prefix) { 'with' }
+    it_behaves_like('chain method with custom prefix') do
+      let!(:prefix) { Chainy::Config::DEFAULT_CHAIN_METHOD_PREFIX }
     end
   end
 
   shared_examples_for 'chain method with custom prefix' do
-    it_behaves_like('chain method')
-  end
-
-  shared_examples_for 'chain method' do
     subject { object.send("#{prefix}_#{method_name}", argument) }
 
     it 'should have "with" prefix' do
@@ -42,8 +39,6 @@ describe '#chain_attr_accessor' do
   end
 
   context 'with one argument' do
-    let(:argument) { 'argument' }
-
     before do
       class SomeClass
         chain_attr_accessor :only_one_method
@@ -56,8 +51,6 @@ describe '#chain_attr_accessor' do
   end
 
   context 'with many arguments' do
-    let(:argument) { 'argument' }
-
     before do
       class SomeClass
         chain_attr_accessor :first_method, :second_method
@@ -71,9 +64,18 @@ describe '#chain_attr_accessor' do
     it_behaves_like('chain method with default prefix') { let!(:method_name) { :second_method } }
   end
 
+  context 'with option argument' do
+    before do
+      class SomeClass
+        chain_attr_accessor :method_with_some_option, option: true
+      end
+    end
+
+    it_behaves_like('attr_accessor') { let!(:getter) { :method_with_some_option } }
+  end
+
   context 'with prefix option' do
     let(:prefix) { 'add' }
-    let(:argument) { 'argument' }
 
     before do
       class SomeClass
@@ -81,14 +83,10 @@ describe '#chain_attr_accessor' do
       end
     end
 
-    it_behaves_like('attr_accessor') { let!(:getter) { :first_method_with_custom_prefix } }
-    it_behaves_like('attr_accessor') { let!(:getter) { :second_method_with_custom_prefix } }
+    it_behaves_like('chain method with custom prefix') { let!(:method_name) { :first_method_with_custom_prefix } }
+    it_behaves_like('chain method with custom prefix') { let!(:method_name) { :second_method_with_custom_prefix } }
+  end
 
-    it_behaves_like('chain method with custom prefix') do
-      let!(:method_name) { :first_method_with_custom_prefix }
-    end
-    it_behaves_like('chain method with custom prefix') do
-      let!(:method_name) { :second_method_with_custom_prefix }
     end
   end
 end
