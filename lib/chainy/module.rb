@@ -31,8 +31,10 @@ class Module
           self
         end
 
-        define_method(:without) do |key|
-          send(getter_method).delete(key)
+        define_method("without_#{getter_method}") do |*keys|
+          keys.each do |key|
+            send(getter_method).delete(key)
+          end
           self
         end
 

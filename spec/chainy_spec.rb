@@ -115,8 +115,8 @@ describe '#chain_attr_accessor' do
       end
 
       it 'should create #without method which removes given option' do
-        object.without(:key1)
-        expect( object.options ).to eql(key2: :value2, key3: :value3)
+        object.without_options(:key1, :key2)
+        expect( object.options ).to eql(key3: :value3)
       end
     end
   end
