@@ -87,6 +87,37 @@ describe '#chain_attr_accessor' do
     it_behaves_like('chain method with custom prefix') { let!(:method_name) { :second_method_with_custom_prefix } }
   end
 
+  context 'with hash option' do
+    before do
+      class SomeClass
+        chain_attr_accessor :options, hash: true
+      end
+    end
+
+    context 'created getter default value' do
+      it 'should be an empty hash' do
+        expect( object.options ).to eql({})
+      end
+    end
+
+    context 'created chain setter' do
+      before do
+        object.with_options(key1: :value1).with_options(key2: :value2, key3: :value3)
+      end
+
+      it 'should merge new options to existing ones' do
+        expect( object.options ).to eql(key1: :value1, key2: :value2, key3: :value3)
+      end
+
+      it 'should overwrite new option if option already existed' do
+        object.with_options(key1: :new_value)
+        expect( object.options ).to eql(key1: :new_value, key2: :value2, key3: :value3)
+      end
+
+      it 'should create #without method which removes given option' do
+        object.without(:key1)
+        expect( object.options ).to eql(key2: :value2, key3: :value3)
+      end
     end
   end
 end

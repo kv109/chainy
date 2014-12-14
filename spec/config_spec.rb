@@ -15,6 +15,12 @@ describe Chainy::Config do
         end
       end
 
+      after do
+        described_class.configure do |config|
+          config.prefix = Chainy::Config::DEFAULT_CHAIN_METHOD_PREFIX
+        end
+      end
+
       it { expect(Chainy::Config.prefix).to eql 'add' }
 
       it 'should create chain method with set prefix' do
