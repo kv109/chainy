@@ -30,9 +30,14 @@ Default prefix for chain setters is `with_`, but you can overwrite it:
 class YourClass
   chain_attr_accessor :strategy, :timeout, prefix: 'add'
 end
+```
 
-instance = YourClass.new
-instance.add_strategy(:mock).add_timeout(30)  #=> chain setters
+or just change the default:
+
+```ruby
+Chainy.configure do |config|
+  config.prefix = 'add'
+end
 ```
 
 ### Installation
